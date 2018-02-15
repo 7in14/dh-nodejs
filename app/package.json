@@ -1,0 +1,17 @@
+{
+  "name": "7in14",
+  "version": "1.0.0",
+  "description": "REST API for 7in14 exercise",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": "https://github.com/7in14/dh-nodejs.git",
+  "author": "Donald Heppner",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.5.0",
+    "koa-router": "^7.4.0",
+    "monk": "^6.0.5"
+  }
+}
