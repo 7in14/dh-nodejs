@@ -4,7 +4,7 @@
   "description": "REST API for 7in14 exercise",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "repository": "https://github.com/7in14/dh-nodejs.git",
   "author": "Donald Heppner",

@@ -6,7 +6,11 @@ var router = new Router();
 
 
 router.get('/:name', async(ctx) => {
-    ctx.body = await `Hello, ${ctx.params.name}!\n`;
+    ctx.body = `Hello, ${ctx.params.name}!\n`;
+});
+
+router.get('/', async(ctx) => {
+    ctx.body = `Hello!\n`;
 });
 
 app
