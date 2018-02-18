@@ -1,9 +1,12 @@
 const app = require('./app.js');
 const supertest = require('supertest');
 
-//let request = supertest.agent(app.listen());
 
 describe("Hello world test", function() {
+    let server = app.listen();
+    let request = supertest.agent(server);
+
+
     it("Says 'Hello!'", function(done) {
         request
             .get("/")
@@ -11,5 +14,3 @@ describe("Hello world test", function() {
             .expect(200, done);
     })
 });
-
-//request.close();

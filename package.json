@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "mocha",
-    "test2": "mocha -u bdd -R spec"
+    "test": "mocha --exit"
   },
   "repository": "https://github.com/7in14/dh-nodejs.git",
   "author": "Donald Heppner",
