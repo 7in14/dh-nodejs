@@ -1,24 +1,24 @@
 const Koa = require('koa');
 const Router = require('koa-router');
-const mongoClient = require('mongodb').MongoClient;
+const Mongoose = require('mongoose');
 
 const app = module.exports = new Koa();
 const router = new Router();
 
-var database;
+// Setup database
+Mongoose.connect('mongodb://localhost:27017/7in14');
+let database = Mongoose.connection;
+database.on('error', console.error.bind(console, 'connection error: '));
+database.once('open', () => { console.log('connected to database') });
 
-mongoClient.connect('7in14-db:CIDWd20A5KCQMXYTSxYHbGlbm4SbwLj1z6yuoK6BwQCCgpjlzdc55VkCeLqRU4EWCUdsW1aDTq7H1SVJQN1BiA==@7in14-db.documents.azure.com:10255/?ssl=true', 
-    function (error, client) {
-        if(error != null) {
-            console.log('error: ' + error);
-        }
-        else {
-            console.log('connected');
-            database = client.db('dh');
-        }
-    });
+var dataSourceSchema = new Mongoose.Schema({
+    name: String,
+    url: String
+});
 
+var DataSource = Mongoose.model('DataSource', dataSourceSchema);
 
+// Setup routes
 router.get('/hello/:name', async (ctx) => {
     ctx.body = `Hello, ${ctx.params.name}!`;
 });
@@ -30,13 +30,16 @@ router.get('/ping', async (ctx) => {
 router.get('/dataSources', async (ctx) => {
     console.log('calling /dataSources');
 
+    await DataSource.find(function (err, result) {
+        if (err) {
+            ctx.status = 500;
+            return console.log(err);
+        }
 
-
-    var dataSources = await db.get("dataSources");
-    var data = await dataSources.find(/*{ name: 'US States' }*/)
-
-    ctx.body = data;
-    ctx.status = 200;
+        console.log(result);
+        ctx.body = result;
+        ctx.status = 200;
+    });
 });
 
 app
