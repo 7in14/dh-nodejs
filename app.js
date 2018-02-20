@@ -11,12 +11,12 @@ let database = Mongoose.connection;
 database.on('error', console.error.bind(console, 'connection error: '));
 database.once('open', () => { console.log('connected to database') });
 
-var dataSourceSchema = new Mongoose.Schema({
+const dataSourceSchema = new Mongoose.Schema({
     name: String,
     url: String
 });
 
-var DataSource = Mongoose.model('DataSource', dataSourceSchema);
+const DataSource = Mongoose.model('DataSource', dataSourceSchema);
 
 // Setup routes
 router.get('/hello/:name', async (ctx) => {
@@ -28,7 +28,7 @@ router.get('/ping', async (ctx) => {
 });
 
 router.get('/dataSources', async (ctx) => {
-    console.log('calling /dataSources');
+    console.log('getting /dataSources');
 
     await DataSource.find(function (err, result) {
         if (err) {
@@ -40,6 +40,50 @@ router.get('/dataSources', async (ctx) => {
         ctx.body = result;
         ctx.status = 200;
     });
+});
+
+router.get('/dataSource/:id', async (ctx) => {
+    console.log('getting /dataSource/id');
+
+    const id = ctx.params.id;
+
+    if(!Mongoose.Types.ObjectId.isValid(id)) {
+        console.log("id not valid: " + id)
+        ctx.status = 400;
+        return;
+    }
+
+    await DataSource.find({ _id: id }, function (err, result) {
+        if (err) {
+            ctx.status = 500;
+            console.log(err);
+        }
+        else if (result.length === 0) {
+            console.log("Could not find data source with id: " + id);
+            ctx.status = 404;
+        }
+        else {
+            console.log("Found data source: " + result);
+            ctx.body = result;
+            ctx.status = 200;
+        }
+    });
+});
+
+router.delete('/dataSource/:id', async (ctx) => {
+    console.log('deleting /dataSource/id');
+
+    const id = ctx.params.id;
+
+    if(!Mongoose.Types.ObjectId.isValid(id)) {
+        console.log("id not valid: " + id)
+        ctx.status = 400;   // bad request
+        return;
+    }
+    
+    await DataSource.remove({ _id: id }, function(err, dataSource) {
+        console.log("removed: " + dataSource);
+    })
 });
 
 app

@@ -1,0 +1,113 @@
+{
+	"info": {
+		"name": "7in14",
+		"_postman_id": "cab765e6-19a8-7aad-e736-e17de692e22b",
+		"description": "Requests for all endpoints described in the requirements for 7in14",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "dataSources",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:3000/dataSources",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dataSources"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "dataSource/id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:3000/dataSource/5a8c614935942ba3ee7d4e69",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dataSource",
+						"5a8c614935942ba3ee7d4e69"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "dataSource/id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:3000/dataSource/5a8c614935942ba3ee7d4e69",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dataSource",
+						"5a8c614935942ba3ee7d4e69"
+					]
+				},
+				"description": "Delete data source"
+			},
+			"response": []
+		},
+		{
+			"name": "dataSource/id",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"test\"\n\t\"url\": \"http://test.com\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/dataSource",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dataSource"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
