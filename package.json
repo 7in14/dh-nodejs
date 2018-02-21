@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
+    "debug": "nodemon --inspect=3001 --inspect-brk=3001 app.js",
     "test": "mocha --exit"
   },
   "repository": "https://github.com/7in14/dh-nodejs.git",
@@ -12,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "koa": "^2.5.0",
+    "koa-body": "^2.5.0",
     "koa-router": "^7.4.0",
     "mongoose": "^5.0.6"
   },

@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const Body = require('koa-body');
 const Router = require('koa-router');
 const Mongoose = require('mongoose');
 
@@ -12,9 +13,15 @@ database.on('error', console.error.bind(console, 'connection error: '));
 database.once('open', () => { console.log('connected to database') });
 
 const dataSourceSchema = new Mongoose.Schema({
-    name: String,
-    url: String
-});
+    name: {
+        type: String,
+        required: true
+    },
+    url: {
+        type: String,
+        required: true
+    }
+}, { versionKey: false });
 
 const DataSource = Mongoose.model('DataSource', dataSourceSchema);
 
@@ -47,7 +54,7 @@ router.get('/dataSource/:id', async (ctx) => {
 
     const id = ctx.params.id;
 
-    if(!Mongoose.Types.ObjectId.isValid(id)) {
+    if (!Mongoose.Types.ObjectId.isValid(id)) {
         console.log("id not valid: " + id)
         ctx.status = 400;
         return;
@@ -70,24 +77,45 @@ router.get('/dataSource/:id', async (ctx) => {
     });
 });
 
+router.put('/dataSource', Body(), async (ctx) => {
+    console.log('putting /dataSource');
+
+    const dataSource = new DataSource(ctx.request.body);
+
+    try {
+        const result = await dataSource.save();
+        console.log('saved new datasource')
+        ctx.body = result;
+        ctx.status = 201;
+    } catch (error) {
+        console.log('could not save datasource: ' + error);
+        if (error.name == 'ValidationError') {
+            ctx.status = 400;
+        }
+        else {
+            ctx.status = 500;
+        }
+    }
+});
+
 router.delete('/dataSource/:id', async (ctx) => {
     console.log('deleting /dataSource/id');
 
     const id = ctx.params.id;
 
-    if(!Mongoose.Types.ObjectId.isValid(id)) {
+    if (!Mongoose.Types.ObjectId.isValid(id)) {
         console.log("id not valid: " + id)
         ctx.status = 400;   // bad request
         return;
     }
-    
-    await DataSource.remove({ _id: id }, function(err, dataSource) {
+
+    await DataSource.remove({ _id: id }, function (err, dataSource) {
         console.log("removed: " + dataSource);
     })
 });
 
-app
-    .use(router.routes())
-    .use(router.allowedMethods());
+//app.use(body);
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 app.listen(3000);
