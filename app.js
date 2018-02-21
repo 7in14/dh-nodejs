@@ -2,8 +2,10 @@ const Koa = require('koa');
 const Body = require('koa-body');
 const Router = require('koa-router');
 const Mongoose = require('mongoose');
-const fs = require('fs');
-const util = require('util');
+const DataSource = require('./models/dataSource');
+const DataSourceController = require('./controllers/dataSource');
+const PingController = require('./controllers/ping');
+const FileController = require('./controllers/file');
 
 const app = module.exports = new Koa();
 const router = new Router();
@@ -14,125 +16,15 @@ let database = Mongoose.connection;
 database.on('error', console.error.bind(console, 'connection error: '));
 database.once('open', () => { console.log('connected to database') });
 
-const dataSourceSchema = new Mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    url: {
-        type: String,
-        required: true
-    }
-}, { versionKey: false });
-
-const DataSource = Mongoose.model('DataSource', dataSourceSchema);
-
 // Setup routes
-router.get('/hello/:name', async (ctx) => {
-    ctx.body = `Hello, ${ctx.params.name}!`;
-});
+router.get('/ping', PingController.get);
 
-router.get('/ping', async (ctx) => {
-    ctx.body = 'pong';
-});
+router.get('/dataSources', DataSourceController.getAll);
+router.get('/dataSource/:id', DataSourceController.get);
+router.put('/dataSource', Body(), DataSourceController.put);
+router.delete('/dataSource/:id', DataSourceController.delete);
 
-router.get('/dataSources', async (ctx) => {
-    console.log('getting /dataSources');
-
-    await DataSource.find(function (err, result) {
-        if (err) {
-            ctx.status = 500;
-            return console.log(err);
-        }
-
-        console.log(result);
-        ctx.body = result;
-        ctx.status = 200;
-    });
-});
-
-router.get('/dataSource/:id', async (ctx) => {
-    console.log('getting /dataSource/id');
-
-    const id = ctx.params.id;
-
-    if (!Mongoose.Types.ObjectId.isValid(id)) {
-        console.log("id not valid: " + id)
-        ctx.status = 400;
-        return;
-    }
-
-    await DataSource.find({ _id: id }, function (err, result) {
-        if (err) {
-            ctx.status = 500;
-            console.log(err);
-        }
-        else if (result.length === 0) {
-            console.log("Could not find data source with id: " + id);
-            ctx.status = 404;
-        }
-        else {
-            console.log("Found data source: " + result);
-            ctx.body = result;
-            ctx.status = 200;
-        }
-    });
-});
-
-router.put('/dataSource', Body(), async (ctx) => {
-    console.log('putting /dataSource');
-
-    const dataSource = new DataSource(ctx.request.body);
-
-    try {
-        const result = await dataSource.save();
-        console.log('saved new datasource')
-        ctx.body = result;
-        ctx.status = 201;
-    } catch (error) {
-        console.log('could not save datasource: ' + error);
-        if (error.name == 'ValidationError') {
-            ctx.status = 400;
-        }
-        else {
-            ctx.status = 500;
-        }
-    }
-});
-
-router.delete('/dataSource/:id', async (ctx) => {
-    console.log('deleting /dataSource/id');
-
-    const id = ctx.params.id;
-
-    if (!Mongoose.Types.ObjectId.isValid(id)) {
-        console.log("id not valid: " + id)
-        ctx.status = 400;   // bad request
-        return;
-    }
-
-    await DataSource.remove({ _id: id }, function (err, dataSource) {
-        console.log("removed: " + dataSource);
-    })
-});
-
-router.get('/file', async (ctx) => {
-    console.log('getting /file');
-
-    const readFile = util.promisify(fs.readFile);
-
-    try {
-        content = await readFile('README.md', 'utf-8');
-        console.log('completed file read');
-
-        ctx.body = content;
-        ctx.status = 200;
-    }
-    catch (error) {
-        console.log('error reading file: ' + error);
-        ctx.status = 500;
-    }
-});
+router.get('/file', FileController.get);
 
 app.use(router.routes());
 app.use(router.allowedMethods());

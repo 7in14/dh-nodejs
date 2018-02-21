@@ -1,0 +1,11 @@
+[
+    {
+        "name": "Raleigh Daily Police Incidents",
+        "url": "https://data.raleighnc.gov/resource/3bhm-we7a.json"
+    },
+    {
+        "name": "Raleigh Pending Building Permits",
+        "url": "https://data.raleighnc.gov/resource/5ccj-g2ps.json"
+    }
+]
+    
