@@ -2,6 +2,8 @@ const Koa = require('koa');
 const Body = require('koa-body');
 const Router = require('koa-router');
 const Mongoose = require('mongoose');
+const fs = require('fs');
+const util = require('util');
 
 const app = module.exports = new Koa();
 const router = new Router();
@@ -114,7 +116,24 @@ router.delete('/dataSource/:id', async (ctx) => {
     })
 });
 
-//app.use(body);
+router.get('/file', async (ctx) => {
+    console.log('getting /file');
+
+    const readFile = util.promisify(fs.readFile);
+
+    try {
+        content = await readFile('README.md', 'utf-8');
+        console.log('completed file read');
+
+        ctx.body = content;
+        ctx.status = 200;
+    }
+    catch (error) {
+        console.log('error reading file: ' + error);
+        ctx.status = 500;
+    }
+});
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 
