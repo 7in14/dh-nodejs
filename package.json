@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "debug": "nodemon --inspect=3001 --inspect-brk=3001 app.js",
-    "test": "mocha --exit"
+    "test": "mocha --recursive --exit"
   },
   "repository": "https://github.com/7in14/dh-nodejs.git",
   "author": "Donald Heppner",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "mocha": "^5.0.1",
+    "sinon": "^4.3.0",
     "supertest": "^3.0.0",
     "supertest-koa-agent": "^0.3.0"
   }

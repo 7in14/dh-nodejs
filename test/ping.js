@@ -1,8 +1,8 @@
-const app = require('./app.js');
+const app = require('../app.js');
 const supertest = require('supertest');
 
-
-describe("7 in 14 Tests", function() {
+// test the server
+describe("Ping Test", function() {
     let server = app.listen();
     let request = supertest.agent(server);
 

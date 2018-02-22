@@ -2,6 +2,7 @@ const Koa = require('koa');
 const Body = require('koa-body');
 const Router = require('koa-router');
 const Mongoose = require('mongoose');
+
 const DataSource = require('./models/dataSource');
 const DataSourceController = require('./controllers/dataSource');
 const PingController = require('./controllers/ping');
@@ -11,10 +12,10 @@ const app = module.exports = new Koa();
 const router = new Router();
 
 // Setup database
-Mongoose.connect('mongodb://localhost:27017/7in14');
 let database = Mongoose.connection;
 database.on('error', console.error.bind(console, 'connection error: '));
 database.once('open', () => { console.log('connected to database') });
+Mongoose.connect('mongodb://localhost:27017/7in14');
 
 // Setup routes
 router.get('/ping', PingController.get);
