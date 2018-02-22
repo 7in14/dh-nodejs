@@ -4,9 +4,11 @@ const fetch = require('node-fetch');
 const { URL, URLSearchParams } = require('url');
 const querystring = require('querystring');
 
+const crimeUrl = new URL('https://data.raleighnc.gov/resource/3bhm-we7a.json');
+exports.crimeUrl = crimeUrl;
 
 exports.get = async (ctx) => {
-    let raleighCrimeUrl = new URL('https://data.raleighnc.gov/resource/3bhm-we7a.json');
+    let raleighCrimeUrl = new URL(crimeUrl);
 
     // look for query
     if (ctx.request.querystring) {
