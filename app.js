@@ -7,6 +7,7 @@ const DataSource = require('./models/dataSource');
 const DataSourceController = require('./controllers/dataSource');
 const PingController = require('./controllers/ping');
 const FileController = require('./controllers/file');
+const RaleighCrimeController = require('./controllers/raleighCrime');
 
 const app = module.exports = new Koa();
 const router = new Router();
@@ -26,6 +27,8 @@ router.put('/dataSource', Body(), DataSourceController.put);
 router.delete('/dataSource/:id', DataSourceController.delete);
 
 router.get('/file', FileController.get);
+
+router.get('/raleigh/crime', RaleighCrimeController.get);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
