@@ -25,7 +25,7 @@ exports.get = async (ctx) => {
     const id = ctx.params.id;
 
     if (!Mongoose.Types.ObjectId.isValid(id)) {
-        console.log("id not valid: " + id)
+        console.log('id not valid: ' + id)
         ctx.status = 400;
         return;
     }
@@ -33,11 +33,11 @@ exports.get = async (ctx) => {
     try {
         let result = await DataSource.find({ _id: id });
         if (result.length === 0) {
-            console.log("Could not find data source with id: " + id);
+            console.log('Could not find data source with id: ' + id);
             ctx.status = 404;
         }
         else {
-            console.log("Found data source: " + result);
+            console.log('Found data source: ' + result);
             ctx.body = result;
             ctx.status = 200;
         }
@@ -74,7 +74,7 @@ exports.delete = async (ctx) => {
     const id = ctx.params.id;
 
     if (!Mongoose.Types.ObjectId.isValid(id)) {
-        console.log("id not valid: " + id)
+        console.log('id not valid: ' + id)
         ctx.status = 400;   // bad request
         return;
     }
@@ -82,11 +82,11 @@ exports.delete = async (ctx) => {
     try {
         let dataSource = await DataSource.findOneAndRemove({ _id: id });
         if (dataSource) {
-            console.log("removed: " + dataSource._id);
+            console.log('removed: ' + dataSource._id);
             ctx.status = 202;
         }
         else {
-            console.log("data source not found; could not be removed");
+            console.log('data source not found; could not be removed');
             ctx.status = 404;
         }
     } catch (error) {
