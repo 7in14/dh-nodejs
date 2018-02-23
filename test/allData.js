@@ -4,6 +4,7 @@ const supertest = require('supertest');
 const sinon = require('sinon');
 const nock = require('nock');
 const chai = require('chai');
+const Mongoose = require('mongoose');
 const app = require('../app.js');
 const allData = require('../controllers/allData');
 const DataSource = require('../models/dataSource');
@@ -22,6 +23,10 @@ describe('DataSource Tests', function () {
     let server = app.listen();
     let request = supertest.agent(server);
 
+    beforeEach(function() {
+        sandbox.stub(Mongoose, 'connect');
+    });
+    
     afterEach(function () {
         sandbox.restore();
     });

@@ -3,6 +3,7 @@
 const app = require('../app.js');
 const supertest = require('supertest');
 const sinon = require('sinon');
+const Mongoose = require('mongoose');
 const DataSource = require('../models/dataSource');
 
 const sandbox = sinon.createSandbox();
@@ -15,6 +16,10 @@ describe('DataSource Tests', function() {
     const docNoId = { 'name': 'n', 'url': 'u' };
     const doc = { 'name': 'n', 'url': 'u', '_id': validId };
     const invalidDoc = { 'url': 'u', '_id': validId };  // missing name
+
+    beforeEach(function() {
+        sandbox.stub(Mongoose, 'connect');
+    });
 
     afterEach(function() {
         sandbox.restore();

@@ -11,14 +11,14 @@ exports.get = async (ctx) => {
     try {
         let result = await DataSource.find();
         let fetches = [];
-        for(let item of result) {
-            fetches.push((async() => {
+        for (let item of result) {
+            fetches.push((async () => {
                 var response = await fetch(item.url);
                 var document = await response.json();
                 return { name: item.name, document };
             })());
         }
-        
+
         ctx.body = await Promise.all(fetches);
         ctx.status = 200;
     } catch (error) {
