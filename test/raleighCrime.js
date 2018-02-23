@@ -28,7 +28,6 @@ describe('DataSource Tests', function () {
             .get('/raleigh/crime')
             .expect(200, testDoc);
 
-        let isDone = scope.isDone();
         expect(scope.isDone()).to.be.true;   // make sure it was called
     });
 

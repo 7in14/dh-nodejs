@@ -16,7 +16,7 @@ describe('DataSource Tests', function() {
     const doc = { 'name': 'n', 'url': 'u', '_id': validId };
     const invalidDoc = { 'url': 'u', '_id': validId };  // missing name
 
-    beforeEach(function() {
+    afterEach(function() {
         sandbox.restore();
     });
 

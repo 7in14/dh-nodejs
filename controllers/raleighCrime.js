@@ -23,7 +23,6 @@ exports.get = async (ctx) => {
             // append it to the crime URL
             for (let kvp of up.entries()) {
                 raleighCrimeUrl.searchParams.append(kvp[0], kvp[1]);
-                console.log('appending: ' + kvp[0] + ' with value ' + kvp[1]);
             }
         }
     }
